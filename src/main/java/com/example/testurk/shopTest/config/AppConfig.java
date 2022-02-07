@@ -24,9 +24,9 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-        ds.setUser("root");
-        ds.setPassword("0660106493");
-        ds.setDatabaseName("shop_test");
+        ds.setUser("your login");
+        ds.setPassword("your password");
+        ds.setDatabaseName("DB name");
         return ds;
     }
 }
