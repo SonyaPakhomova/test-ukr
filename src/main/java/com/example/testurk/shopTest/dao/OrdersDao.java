@@ -4,9 +4,12 @@ import com.example.testurk.shopTest.model.Orders;
 
 import java.util.List;
 
-public interface OrderDetailsDao {
+public interface OrdersDao {
     List<Orders> getOrderWithCountOfMoreThanTwo();
 
-    List<Orders> getByOrdersQuantityBetween(int min, int max);
+    List<Integer> getByOrdersQuantityBetween();
 
+    Orders create(Orders orders);
+
+    List<Orders> getAll();
 }

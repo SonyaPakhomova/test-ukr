@@ -2,7 +2,6 @@ package com.example.testurk.shopTest.model;
 
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Data
 public class Goods {

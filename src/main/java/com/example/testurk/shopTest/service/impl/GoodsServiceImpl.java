@@ -21,6 +21,16 @@ public class GoodsServiceImpl implements GoodsService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Goods create(Goods goods) {
+        return goodsDao.create(goods);
+    }
+
+    @Override
+    public List<Goods> getAll() {
+        return goodsDao.getAll();
+    }
+
     public Goods mapping(Goods goods) {
         return new Goods(goods.getName(), goods.getQuantity());
     }

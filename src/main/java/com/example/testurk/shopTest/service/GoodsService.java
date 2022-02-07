@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface GoodsService {
     List<Goods> getAllContains(String contains);
+
+    Goods create(Goods goods);
+
+    List<Goods> getAll();
 }

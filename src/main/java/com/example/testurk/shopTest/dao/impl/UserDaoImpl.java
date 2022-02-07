@@ -1,27 +1,29 @@
 package com.example.testurk.shopTest.dao.impl;
 
+import com.example.testurk.shopTest.config.AppConfig;
 import com.example.testurk.shopTest.dao.UserDao;
 import com.example.testurk.shopTest.exception.DataProcessingException;
-import com.example.testurk.shopTest.util.ConnectionUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
 @Repository
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
+    private AppConfig appConfig;
 
     @Override
     public void updateName(String name, String email) {
-        String selectQuery = "UPDATE users SET name = ? WHERE email = ?";
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateCarStatement =
-                     connection.prepareStatement(selectQuery)) {
-            updateCarStatement.setString(1, name);
-            updateCarStatement.setString(2, email);
-            updateCarStatement.executeUpdate();
+        String query = "UPDATE users SET name = ? WHERE email = ?";
+        try (Connection connection = appConfig.dataSource().getConnection();
+             PreparedStatement updateUserStatement =
+                     connection.prepareStatement(query)) {
+            updateUserStatement.setString(1, name);
+            updateUserStatement.setString(2, email);
+            updateUserStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update name for user with email " + email, e);
         }
@@ -29,11 +31,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteAllInactive() {
-        String selectQuery = "DELETE FROM user WHERE account_status = false";
-        ResultSet resultSet;
-        try (Connection connection = ConnectionUtil.getConnection();
+        String query = "DELETE FROM users WHERE account_status = false";
+        try (Connection connection = appConfig.dataSource().getConnection();
              PreparedStatement getUserStatement
-                     = connection.prepareStatement(selectQuery)) {
+                     = connection.prepareStatement(query)) {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete inactive user : ", e);
         }
