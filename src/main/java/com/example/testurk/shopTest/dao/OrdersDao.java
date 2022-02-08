@@ -12,4 +12,8 @@ public interface OrdersDao {
     Orders create(Orders orders);
 
     List<Orders> getAll();
+
+    double getAverageTotalPrice(String email);
+
+    double getNeededQuantity(String name);
 }

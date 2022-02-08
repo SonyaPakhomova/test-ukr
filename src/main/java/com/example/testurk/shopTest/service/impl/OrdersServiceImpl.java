@@ -1,5 +1,6 @@
 package com.example.testurk.shopTest.service.impl;
 
+import com.example.testurk.shopTest.dao.GoodsDao;
 import com.example.testurk.shopTest.dao.OrdersDao;
 import com.example.testurk.shopTest.model.Order;
 import com.example.testurk.shopTest.model.Orders;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
     private OrdersDao ordersDao;
+    private GoodsDao goodsDao;
 
     @Override
     public List<Orders> getOrderWithCountOfMoreThanTwo() {
@@ -25,13 +27,22 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Orders create(Orders order) {
-        return ordersDao.create(order);
+    public Orders create(Orders orders) {
+        if (goodsDao.getAvailableQuantity(orders.getGoodsId().getName()) >=
+                ordersDao.getNeededQuantity(orders.getGoodsId().getName())) {
+            return ordersDao.create(orders);
+        }
+        return new Orders();
     }
 
     @Override
     public List<Orders> getAll() {
         return ordersDao.getAll();
+    }
+
+    @Override
+    public double getAverageTotalPrice(String email) {
+        return ordersDao.getAverageTotalPrice(email);
     }
 
 }

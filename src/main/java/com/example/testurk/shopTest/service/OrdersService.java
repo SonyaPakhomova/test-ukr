@@ -12,4 +12,6 @@ public interface OrdersService {
     Orders create(Orders order);
 
     List<Orders> getAll();
+
+    double getAverageTotalPrice(String email);
 }

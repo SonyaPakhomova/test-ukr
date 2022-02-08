@@ -1,6 +1,7 @@
 package com.example.testurk.shopTest.controller;
 
 import com.example.testurk.shopTest.model.Goods;
+import com.example.testurk.shopTest.model.User;
 import com.example.testurk.shopTest.service.GoodsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,16 @@ public class GoodsController {
     }
 
     @GetMapping("/create")
-    public Goods create(@RequestParam Goods goods) {
-      return goodsService.create(goods);
+    public Goods create(@RequestParam String name, @RequestParam int quantity, @RequestParam int price) {
+        Goods goods = new Goods();
+        goods.setQuantity(quantity);
+        goods.setName(name);
+        goods.setPriceForOne(price);
+        return goodsService.create(goods);
+    }
+
+    @GetMapping("/get-by-name")
+    public Goods getByName(@RequestParam String name) {
+        return goodsService.getByName(name);
     }
 }

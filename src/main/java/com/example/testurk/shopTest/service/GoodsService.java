@@ -10,4 +10,8 @@ public interface GoodsService {
     Goods create(Goods goods);
 
     List<Goods> getAll();
+
+    double getAvailableQuantity(String name);
+
+    Goods getByName(String name);
 }
