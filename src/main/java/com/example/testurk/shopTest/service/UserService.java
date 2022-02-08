@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void updateName(String name, String email);
+    int updateName(String name, String email);
 
     int deleteAllInactive();
 

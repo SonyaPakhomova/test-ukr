@@ -23,14 +23,14 @@ public class UserDaoImpl implements UserDao {
     private AppConfig appConfig;
 
     @Override
-    public void updateName(String name, String email) {
+    public int updateName(String name, String email) {
         String query = "UPDATE users SET name = ? WHERE email = ?";
         try (Connection connection = appConfig.dataSource().getConnection();
              PreparedStatement updateUserStatement =
                      connection.prepareStatement(query)) {
             updateUserStatement.setString(1, name);
             updateUserStatement.setString(2, email);
-            updateUserStatement.executeUpdate();
+            return updateUserStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update name for user with email " + email, e);
         }
@@ -40,9 +40,9 @@ public class UserDaoImpl implements UserDao {
     public int deleteAllInactive() {
         String query = "DELETE FROM users WHERE account_status = false";
         try (Connection connection = appConfig.dataSource().getConnection();
-             PreparedStatement getUserStatement
+             PreparedStatement deleteUserStatement
                      = connection.prepareStatement(query)) {
-            return getUserStatement.executeUpdate();
+            return deleteUserStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete inactive user : ", e);
         }
