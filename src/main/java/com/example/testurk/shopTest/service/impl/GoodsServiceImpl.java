@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -16,9 +15,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods> getAllContains(String contains) {
-        return goodsDao.getAllContains(contains).stream()
-                .map(this::mapping)
-                .collect(Collectors.toList());
+        return goodsDao.getAllContains(contains);
     }
 
     @Override
@@ -31,7 +28,15 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsDao.getAll();
     }
 
-    public Goods mapping(Goods goods) {
-        return new Goods(goods.getName(), goods.getQuantity());
+    @Override
+    public double getAvailableQuantity(String name) {
+        return goodsDao.getAvailableQuantity(name);
     }
+
+    @Override
+    public Goods getByName(String name) {
+        return goodsDao.getByName(name)
+                .orElseThrow(() -> new RuntimeException("Can't get good by name " + name));
+    }
+
 }

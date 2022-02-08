@@ -1,7 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS `shop_test` DEFAULT CHARACTER SET utf8;
 USE `shop_test`;
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_SAFE_UPDATES = 0;
+SET foreign_key_checks = 0;
 
 CREATE TABLE `users` (
                          `id` bigint NOT NULL AUTO_INCREMENT,

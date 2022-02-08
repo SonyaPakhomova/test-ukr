@@ -4,6 +4,7 @@ import com.example.testurk.shopTest.config.AppConfig;
 import com.example.testurk.shopTest.dao.GoodsDao;
 import com.example.testurk.shopTest.exception.DataProcessingException;
 import com.example.testurk.shopTest.model.Goods;
+import com.example.testurk.shopTest.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -22,18 +24,24 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public List<Goods> getAllContains(String contains) {
-        String query = "SELECT * FROM goods WHERE name LIKE ?";
+        String query = "SELECT name, price_for_one FROM goods WHERE name LIKE (?) ";
         ResultSet resultSet;
+        String like = "%" + contains + "%";
         try (Connection connection = appConfig.dataSource().getConnection();
              PreparedStatement getAllGoodsStatement
                      = connection.prepareStatement(query)) {
-            getAllGoodsStatement.setString(1, "'%" + contains + "%'");
-            List<Goods> goods = new ArrayList<>();
+            getAllGoodsStatement.setString(1, like);
+            List<Goods> goodsList = new ArrayList<>();
             resultSet = getAllGoodsStatement.executeQuery();
             while (resultSet.next()) {
-                goods.add(setGoods(resultSet));
+                String name = resultSet.getString("name");
+                Double priceForOne = resultSet.getDouble("price_for_one");
+                Goods goods = new Goods();
+                goods.setName(name);
+                goods.setPriceForOne(priceForOne);
+                goodsList.add(goods);
             }
-            return goods;
+            return goodsList;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get goods which contains : " + contains, e);
         }
@@ -80,12 +88,54 @@ public class GoodsDaoImpl implements GoodsDao {
         }
     }
 
+    @Override
+    public double getAvailableQuantity(String name) {
+        String query = "SELECT goods.quantity as quantity " +
+                "FROM goods " +
+                "WHERE goods.name = ? ";
+        ResultSet resultSet;
+        try (Connection connection = appConfig.dataSource().getConnection();
+             PreparedStatement getAvailableStatement
+                     = connection.prepareStatement(query)) {
+            getAvailableStatement.setString(1, name);
+            Double available = 0.00;
+            resultSet = getAvailableStatement.executeQuery();
+            while (resultSet.next()) {
+                available = resultSet.getDouble("quantity");
+            }
+            return available;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get available goods quantity by good name: " + name, e);
+        }
+    }
+
+    @Override
+    public Optional<Goods> getByName(String name) {
+        String query = "SELECT * FROM goods WHERE name = ?";
+        try (Connection connection = appConfig.dataSource().getConnection();
+             PreparedStatement getGoodsStatement = connection.prepareStatement(query)) {
+            getGoodsStatement.setString(1, name);
+            ResultSet resultSet = getGoodsStatement.executeQuery();
+            Goods goods = null;
+            if (resultSet.next()) {
+                goods = setGoods(resultSet);
+            }
+            return Optional.ofNullable(goods);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Couldn't get good by name " + name, e);
+        }
+    }
+
+
     private Goods setGoods(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         int quantity = resultSet.getInt("quantity");
         double priceForOne = resultSet.getDouble("price_for_one");
-        Goods goods = new Goods(name, quantity, priceForOne);
+        Goods goods = new Goods();
+        goods.setName(name);
+        goods.setQuantity(quantity);
+        goods.setPriceForOne(priceForOne);
         goods.setId(id);
         return goods;
     }

@@ -1,5 +1,6 @@
 package com.example.testurk.shopTest.service.impl;
 
+import com.example.testurk.shopTest.dao.GoodsDao;
 import com.example.testurk.shopTest.dao.OrderDao;
 import com.example.testurk.shopTest.model.Order;
 import com.example.testurk.shopTest.service.OrderService;
@@ -13,9 +14,20 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
 
-
     @Override
     public List<Order> getAll() {
         return orderDao.getAll();
+    }
+
+    @Override
+    public Order create(Order order) {
+
+        return orderDao.create(order);
+    }
+
+    @Override
+    public Order getOrderByNumber(int number) {
+        return orderDao.getOrderByNumber(number)
+                .orElseThrow(() -> new RuntimeException("Can't get order by order number " + number));
     }
 }

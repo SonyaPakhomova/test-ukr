@@ -1,19 +1,18 @@
 package com.example.testurk.shopTest.model;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 public class Orders {
     private Long id;
-    @NonNull
     private Order orderId;
-    @NonNull
     private Goods goodsId;
-    @NonNull
     private int quantity;
-    @NonNull
-    private int totalPrice;
+    private double totalPrice;
 }
