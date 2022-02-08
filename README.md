@@ -14,7 +14,7 @@ This project is an application that works with a database that stores data about
 - Use `//localhost:8080/users/delete-inactive` to delete all users from DB with inactive account status;
 - Use `//localhost:8080/users/update-by-email?name=Kolya&email=roma@gmail.com` to update user name by email;
 - Use `//localhost:8080/users/create?name=Dima&email=dima@gmail.com&status=true` to create new user;
-- Use `//localhost:8080/users/get-by-name?name=Roma` to get user bu name;
+- Use `//localhost:8080/users/get-by-name?name=Roma` to get user by name;
 - Use `//localhost:8080/users/get-by-email?email=roma@gmail.com` to get user by email;
 - Use `//localhost:8080/orders/get-average?email=alice@gmail.com` to get average price of order by user email;
 
