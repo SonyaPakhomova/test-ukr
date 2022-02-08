@@ -24,10 +24,4 @@ public class OrderServiceImpl implements OrderService {
 
         return orderDao.create(order);
     }
-
-    @Override
-    public Order getOrderByNumber(int number) {
-        return orderDao.getOrderByNumber(number)
-                .orElseThrow(() -> new RuntimeException("Can't get order by order number " + number));
-    }
 }

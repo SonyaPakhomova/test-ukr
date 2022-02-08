@@ -22,14 +22,8 @@ public class UserController {
 
     @DeleteMapping("/delete-inactive")
     public ResponseEntity<?> deleteAllInactive() {
-        ResponseEntity<?> responseEntity;
-        try {
             userService.deleteAllInactive();
-            responseEntity = new ResponseEntity<String>("Users Deleted", HttpStatus.OK);
-        } catch (Exception e) {
-            responseEntity = new ResponseEntity<String>("Unable delete movie", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return responseEntity;
+        return new ResponseEntity<>("Entity delete", HttpStatus.OK);
     }
 
     @PatchMapping("/update-by-email")
