@@ -193,7 +193,7 @@ public class OrdersDaoImpl implements OrdersDao {
         Long goodsId = resultSet.getObject("goods_id", Long.class);
         String goodName = resultSet.getNString("goods_name");
         int goodQuantity = resultSet.getInt("goods_quantity");
-        double priceForOne = resultSet.getDouble("goods_price_for_one");
+        float priceForOne = resultSet.getFloat("goods_price_for_one");
         Goods goods = new Goods();
         goods.setPriceForOne(priceForOne);
         goods.setName(goodName);

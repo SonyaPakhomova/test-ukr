@@ -5,6 +5,7 @@ import com.example.testurk.shopTest.model.User;
 import com.example.testurk.shopTest.service.GoodsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,12 +28,12 @@ public class GoodsController {
         return goodsService.getAll();
     }
 
-    @GetMapping("/create")
-    public Goods create(@RequestParam String name, @RequestParam int quantity, @RequestParam int price) {
+    @PostMapping("/create")
+    public Goods create(@RequestParam String name, @RequestParam int quantity, @RequestParam float priceForOne) {
         Goods goods = new Goods();
         goods.setQuantity(quantity);
         goods.setName(name);
-        goods.setPriceForOne(price);
+        goods.setPriceForOne(priceForOne);
         return goodsService.create(goods);
     }
 

@@ -35,7 +35,7 @@ public class GoodsDaoImpl implements GoodsDao {
             resultSet = getAllGoodsStatement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Double priceForOne = resultSet.getDouble("price_for_one");
+                Float priceForOne = resultSet.getFloat("price_for_one");
                 Goods goods = new Goods();
                 goods.setName(name);
                 goods.setPriceForOne(priceForOne);
@@ -98,10 +98,10 @@ public class GoodsDaoImpl implements GoodsDao {
              PreparedStatement getAvailableStatement
                      = connection.prepareStatement(query)) {
             getAvailableStatement.setString(1, name);
-            Double available = 0.00;
+            Float available = 0f;
             resultSet = getAvailableStatement.executeQuery();
             while (resultSet.next()) {
-                available = resultSet.getDouble("quantity");
+                available = resultSet.getFloat("quantity");
             }
             return available;
         } catch (SQLException e) {
@@ -131,7 +131,7 @@ public class GoodsDaoImpl implements GoodsDao {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         int quantity = resultSet.getInt("quantity");
-        double priceForOne = resultSet.getDouble("price_for_one");
+        float priceForOne = resultSet.getFloat("price_for_one");
         Goods goods = new Goods();
         goods.setName(name);
         goods.setQuantity(quantity);
