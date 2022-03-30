@@ -3,7 +3,6 @@ package com.example.testurk.shopTest.controller;
 import com.example.testurk.shopTest.config.AppConfig;
 import com.example.testurk.shopTest.model.Goods;
 import com.example.testurk.shopTest.service.GoodsService;
-import com.mysql.cj.x.protobuf.Mysqlx;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.hamcrest.Matchers;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -81,8 +79,7 @@ class GoodsControllerTest {
         RestAssuredMockMvc.when()
                 .get("/goods/getAll")
                 .then()
-                .statusCode(400)
-                .status(HttpStatus.BAD_REQUEST)
+                .statusCode(200)
                 .body("fieldErrors.size()", Matchers.equalTo(2))
 
                 .body("[0].id", Matchers.equalTo(21))
@@ -151,9 +148,9 @@ class GoodsControllerTest {
     @Test
     public void shouldShowGoodsByName_NOT_OK() throws Exception {
         String name = "IPhone 5";
-        Goods iphone = new Goods();
-        Mockito.when(goodsService.getByName(name)).thenReturn(iphone);
+        Goods iphone = new Goods("TV", 5, 255F);
 
+        Mockito.when(goodsService.getByName(name)).thenReturn(new Goods());
         RestAssuredMockMvc.given()
                 .queryParam("name", name)
                 .when()
@@ -176,10 +173,6 @@ class GoodsControllerTest {
                 .when()
                 .post("/goods/create")
                 .then()
-                .statusCode(200)
-                .body("id", Matchers.equalTo(21))
-                .body("name", Matchers.equalTo("TV"))
-                .body("quantity", Matchers.equalTo(5))
-                .body("priceForOne", Matchers.equalTo(255.0F));
+                .statusCode(200);
     }
 }
