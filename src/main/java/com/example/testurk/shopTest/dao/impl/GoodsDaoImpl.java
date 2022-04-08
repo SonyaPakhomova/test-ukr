@@ -126,6 +126,17 @@ public class GoodsDaoImpl implements GoodsDao {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        String selectQuery = "DELETE FROM goods";
+        try (Connection connection = appConfig.dataSource().getConnection();
+             PreparedStatement deleteCarStatement =
+                     connection.prepareStatement(selectQuery)) {
+            deleteCarStatement.execute();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't delete car ", e);
+        }
+    }
 
     private Goods setGoods(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
