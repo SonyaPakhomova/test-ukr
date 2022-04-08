@@ -15,4 +15,6 @@ public interface GoodsDao {
     double getAvailableQuantity(String name);
 
     Optional<Goods> getByName(String name);
+
+    void deleteAll();
 }

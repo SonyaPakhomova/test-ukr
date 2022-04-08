@@ -29,11 +29,10 @@ public class GoodsController {
     }
 
     @PostMapping("/create")
-    public Goods create(@RequestParam String name, @RequestParam int quantity, @RequestParam float priceForOne) {
-        Goods goods = new Goods();
-        goods.setQuantity(quantity);
-        goods.setName(name);
-        goods.setPriceForOne(priceForOne);
+    public Goods create(@RequestParam Goods goods) {
+        String name = goods.getName();
+        int quantity = goods.getQuantity();
+        float priceForOne = goods.getPriceForOne();
         return goodsService.create(goods);
     }
 
